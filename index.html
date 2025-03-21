@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Date Time Calculator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            max-width: 90vw;
+            margin: 5vh auto;
+            padding: 4vw;
+            background: linear-gradient(135deg, #1a1a1a, #2c2c2c);
+            color: #e0e0e0;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+        h2 {
+            text-align: center;
+            color: #4CAF50;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            font-size: 2rem;
+        }
+        .input-group {
+            margin: 4vw 0;
+            background: #2a2a2a;
+            padding: 4vw;
+            border-radius: 10px;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        label {
+            display: block;
+            margin-bottom: 2vw;
+            font-weight: 500;
+            color: #bbb;
+            font-size: 1.2rem;
+        }
+        input {
+            padding: 2vw;
+            background: #3a3a3a;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            width: 100%;
+            max-width: 100%;
+        }
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 5px #4CAF50;
+        }
+        .start-group, .duration-group {
+            display: flex;
+            flex-direction: column;
+            gap: 3vw;
+        }
+        .input-wrapper {
+            display: flex;
+            flex-direction: column; /* Stack span and input vertically */
+            gap: 1vw; /* Space between span and input */
+        }
+        span {
+            color: #999;
+            font-size: 1rem;
+        }
+        button {
+            padding: 3vw 6vw;
+            background: linear-gradient(135deg, #4CAF50, #388E3C);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            display: block;
+            margin: 4vw auto;
+            font-size: 1.2rem;
+        }
+        button:hover {
+            background: linear-gradient(135deg, #45a049, #357a38);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+        }
+        #result {
+            margin-top: 4vw;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3vw;
+            background: #2a2a2a;
+            padding: 3vw;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        #dateText {
+            color: #4CAF50;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            font-size: 1.2rem;
+        }
+        .clock {
+            width: 30vw;
+            height: 30vw;
+            border: 3px solid #4CAF50;
+            border-radius: 50%;
+            position: relative;
+            background: radial-gradient(circle, #3a3a3a, #2a2a2a);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(0, 0, 0, 0.4);
+        }
+        .hour-hand, .minute-hand, .second-hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom;
+            background: #e0e0e0;
+        }
+        .hour-hand {
+            width: 3px;
+            height: 35%;
+        }
+        .minute-hand {
+            width: 2px;
+            height: 45%;
+        }
+        .second-hand {
+            width: 1px;
+            height: 50%;
+            background: #ff5555;
+        }
+        .center-dot {
+            width: 2vw;
+            height: 2vw;
+            background: #4CAF50;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 5px #4CAF50;
+        }
+
+        @media (max-width: 430px) {
+            body {
+                padding: 5vw;
+            }
+            h2 {
+                font-size: 1.8rem;
+            }
+            input, button {
+                font-size: 1rem;
+            }
+            .clock {
+                width: 40vw;
+                height: 40vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>Date Time Calculator</h2>
+    
+    <div class="input-group">
+        <label>Start Date and Time:</label>
+        <div class="start-group">
+            <div class="input-wrapper">
+                <span>Date</span>
+                <input type="date" id="startDate">
+            </div>
+            <div class="input-wrapper">
+                <span>Time</span>
+                <input type="time" id="startTime">
+            </div>
+        </div>
+    </div>
+
+    <div class="input-group">
+        <label>Duration:</label>
+        <div class="duration-group">
+            <div class="input-wrapper">
+                <span>Days</span>
+                <input type="number" id="days" min="0" placeholder="0">
+            </div>
+            <div class="input-wrapper">
+                <span>Hours</span>
+                <input type="number" id="hours" min="0" placeholder="0">
+            </div>
+            <div class="input-wrapper">
+                <span>Minutes</span>
+                <input type="number" id="minutes" min="0" placeholder="0">
+            </div>
+        </div>
+    </div>
+
+    <button onclick="calculateEndDate()">Calculate End Date</button>
+
+    <div id="result">
+        <span id="dateText"></span>
+        <div class="clock" id="clock">
+            <div class="hour-hand" id="hourHand"></div>
+            <div class="minute-hand" id="minuteHand"></div>
+            <div class="second-hand" id="secondHand"></div>
+            <div class="center-dot"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0];
+            document.getElementById('startDate').value = formattedDate;
+        });
+
+        function calculateEndDate() {
+            const startDate = document.getElementById('startDate').value;
+            const startTime = document.getElementById('startTime').value;
+            const days = parseInt(document.getElementById('days').value) || 0;
+            const hours = parseInt(document.getElementById('hours').value) || 0;
+            const minutes = parseInt(document.getElementById('minutes').value) || 0;
+
+            if (!startDate || !startTime) {
+                document.getElementById('dateText').innerHTML = "Please select both start date and time.";
+                document.getElementById('clock').style.display = 'none';
+                return;
+            }
+
+            if (days === 0 && hours === 0 && minutes === 0) {
+                document.getElementById('dateText').innerHTML = "Please enter at least one duration value.";
+                document.getElementById('clock').style.display = 'none';
+                return;
+            }
+
+            const startDateTime = new Date(`${startDate}T${startTime}`);
+            const endDate = new Date(startDateTime);
+            endDate.setDate(startDateTime.getDate() + days);
+            endDate.setHours(startDateTime.getHours() + hours);
+            endDate.setMinutes(startDateTime.getMinutes() + minutes);
+
+            const options = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            
+            const formattedEndDate = endDate.toLocaleString('en-US', options);
+            document.getElementById('dateText').innerHTML = `${formattedEndDate}`;
+            document.getElementById('clock').style.display = 'block';
+
+            const hoursDeg = (endDate.getHours() % 12 + endDate.getMinutes() / 60) * 30;
+            const minutesDeg = endDate.getMinutes() * 6;
+            const secondsDeg = endDate.getSeconds() * 6;
+
+            document.getElementById('hourHand').style.transform = `rotate(${hoursDeg}deg) translateX(-50%)`;
+            document.getElementById('minuteHand').style.transform = `rotate(${minutesDeg}deg) translateX(-50%)`;
+            document.getElementById('secondHand').style.transform = `rotate(${secondsDeg}deg) translateX(-50%)`;
+        }
+    </script>
+</body>
+</html>
